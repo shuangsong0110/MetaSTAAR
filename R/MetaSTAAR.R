@@ -102,7 +102,8 @@ MetaSTAAR <- function(obj_MetaSTAAR_merge,annotation_phred=NULL,rv_num_cutoff=2)
       w_B_2 <- cbind(w_2,w_B_2)
       w_B <- cbind(w_B_1,w_B_2)
       w_B <- as.matrix(w_B)
-
+      w_B <- t(t(w_B)/apply(w_B,2,sum))
+      
       ## SKAT
       w_S_1 <- sqrt(annotation_rank)*w_1
       w_S_1 <- cbind(w_1,w_S_1)
@@ -110,6 +111,8 @@ MetaSTAAR <- function(obj_MetaSTAAR_merge,annotation_phred=NULL,rv_num_cutoff=2)
       w_S_2 <- cbind(w_2,w_S_2)
       w_S <- cbind(w_S_1,w_S_2)
       w_S <- as.matrix(w_S)
+      w_S <- t(t(w_S)/apply(w_S,2,sum))
+      ## avoid too small w_S lead to NaN
 
       ## ACAT-V
       w_A_1 <- annotation_rank*w_1^2/dbeta(MAF,0.5,0.5)^2
@@ -118,6 +121,7 @@ MetaSTAAR <- function(obj_MetaSTAAR_merge,annotation_phred=NULL,rv_num_cutoff=2)
       w_A_2 <- cbind(w_2^2/dbeta(MAF,0.5,0.5)^2,w_A_2)
       w_A <- cbind(w_A_1,w_A_2)
       w_A <- as.matrix(w_A)
+      w_A <- t(t(w_A)/apply(w_A,2,sum))
     }
 
     pvalues <- MetaSTAAR_O_SMMAT(obj_MetaSTAAR_merge$U,obj_MetaSTAAR_merge$cov,
